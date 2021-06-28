@@ -34,8 +34,6 @@ public class ListCollegeController extends HttpServlet{
 	    
 	    if(action.equals("ajax")) {
 	    	String search = req.getParameter("text");
-			List<CollegesInfo> list = collegeBO.searchColleges(search);
-	    	req.setAttribute("search", search);
 	    	
 			PrintWriter writer = resp.getWriter();
 //			writer.append(gson.toJson(list).toString());
@@ -50,11 +48,7 @@ public class ListCollegeController extends HttpServlet{
 	    	req.setAttribute("course", course);
 	    	req.setAttribute("type", type);
 	    	
-	    	List<CollegesInfo> colleges = collegeBO.searchColleges(search, province, course, type);
-	    	List<Course> courses = courseBO.getCourses();
-	    	
-	    	req.setAttribute("colleges", colleges);
-	    	req.setAttribute("courses", courses);
+	    
 	    	
 	    	req.getRequestDispatcher("view/jsp/page/FilterUI.jsp").forward(req, resp);;
 	    }else if(action.equals("normal-3p")){

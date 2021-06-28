@@ -4,7 +4,8 @@ import java.util.List;
 
 import model.Course;
 
-public interface ICourseDAO extends IGenericDAO<Course>{
+public interface ICourseDAO {
 	public List<Course> getCourses();
-	public boolean addCourse(Course course,String idFrame);
+
+	public boolean addCourse(Course course, String idFrame);
 }

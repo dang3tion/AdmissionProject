@@ -1,7 +1,5 @@
 package bo.impl;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import bo.ICollegesBO;
@@ -9,7 +7,6 @@ import dao.ICollegesDAO;
 import dao.impl.CollegesDAO;
 import mapper.MapperList;
 import model.CollegesInfo;
-import page.Page;
 
 public class CollegesBO implements ICollegesBO {
 	private ICollegesDAO collegeDAO = CollegesDAO.getInstance();
@@ -20,16 +17,6 @@ public class CollegesBO implements ICollegesBO {
 	}
 
 	public CollegesBO() {
-	}
-
-	@Override
-	public List<CollegesInfo> searchColleges(String search) {
-		return collegeDAO.searchColleges(search, new Page());
-	}
-
-	@Override
-	public List<CollegesInfo> searchColleges(String search, Object... params) {
-		return collegeDAO.searchColleges(search, new Page(), params);
 	}
 
 	@Override
@@ -57,4 +44,6 @@ public class CollegesBO implements ICollegesBO {
 
 		return CollegesDAO.getInstance().insertColleges(c);
 	}
+
+
 }

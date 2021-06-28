@@ -16,7 +16,6 @@
                 <div class="form-search-wrap mb-3" data-aos="fade-up" data-aos-delay={200}>
                     <form method="GET" action="college-list">
                     <input type="hidden" name="search-method" value="normal"/>
-                    <input type="hidden" name="search" value="${search}"/>
                         <div class="row align-items-center">
                             <div class="col-lg-12 mb-4 mb-xl-0 col-xl-3">
                                 <div class="wrap-icon border">
@@ -95,12 +94,7 @@
                                     <span class="icon">
                       <span class="icon-keyboard_arrow_down"></span>
                                     </span>
-                                    <select class="form-control rounded" name="course" id>
-				                      <option value>All Major</option>
-										<c:forEach items="${courses}" var="item">
-											<option value="${item.name}">${item.name}</option>
-										</c:forEach>
-                				    </select>
+                                    
                                 </div>
                             </div>
                             <div class="col-lg-12 mb-4 mb-xl-0 col-xl-3">
