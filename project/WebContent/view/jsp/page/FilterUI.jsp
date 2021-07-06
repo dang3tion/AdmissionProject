@@ -23,7 +23,8 @@
                                 <div class="wrap-icon border">
                                     <span class="icon icon-room"></span>
                                     <select class="form-control rounded" name="province" id>
-												<option  value="tphcm">An Giang</option>
+                                                <option  value="All">All</option>
+												<option  value="An Giang">An Giang</option>
 												<option  value="Bà Rịa – Vũng Tàu">Bà Rịa – Vũng Tàu</option>
 												<option  value="Bắc Giang">Bắc Giang</option>
 												<option  value="Bắc Kạn">Bắc Kạn</option>
