@@ -1,5 +1,7 @@
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="model.CollegesInfo" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <c:url var="url" scope="session" value="/view"></c:url>
@@ -14,15 +16,14 @@
         <div class="site-section bg-light">
             <div class="container">
                 <div class="form-search-wrap mb-3" data-aos="fade-up" data-aos-delay={200}>
-                    <form method="GET" action="college-list">
-                    <input type="hidden" name="search-method" value="normal"/>
+                    <form method="GET" action="filter">
+                    <input type="hidden" />
                         <div class="row align-items-center">
                             <div class="col-lg-12 mb-4 mb-xl-0 col-xl-3">
                                 <div class="wrap-icon border">
                                     <span class="icon icon-room"></span>
                                     <select class="form-control rounded" name="province" id>
-					                            <option value>All</option>
-												<option  value="An Giang">An Giang</option>
+												<option  value="tphcm">An Giang</option>
 												<option  value="Bà Rịa – Vũng Tàu">Bà Rịa – Vũng Tàu</option>
 												<option  value="Bắc Giang">Bắc Giang</option>
 												<option  value="Bắc Kạn">Bắc Kạn</option>
@@ -91,6 +92,16 @@
                             </div>
                             <div class="col-lg-12 mb-4 mb-xl-0 col-xl-3">
                                 <div class="select-wrap border">
+                                    <select class="form-control rounded" name="major" id>
+                                        <%
+                                        ArrayList<String> majors = (ArrayList<String>) request.getAttribute("majors");
+                                        %>
+
+                                        <% for(String s : majors){ %>
+                                        <option value="<%=s%>"><%=s%></option>
+                                        <%}%>
+
+                                    </select>
                                     <span class="icon">
                       <span class="icon-keyboard_arrow_down"></span>
                                     </span>
@@ -103,8 +114,7 @@
                       <span class="icon-keyboard_arrow_down"></span>
                                     </span>
                                     <select class="form-control rounded" name="type" id>
-				                      <option value>Type</option>
-				                      <option value="Public University">Public University</option>
+				                      <option value="daihoc">Public University</option>
 				                      <option value="Private University">Private University</option>
 				                      <option value="Public College">Public College</option>
 				                      <option value="Private College">Private College</option>
@@ -131,17 +141,18 @@
                 <section class="">
                     <div class="container">
                         <div class="row">
-                        <c:forEach items="${colleges}" var="item">
+                        <% ArrayList<CollegesInfo> colleges = (ArrayList<CollegesInfo>) request.getAttribute("list");
+                            for(CollegesInfo c : colleges) { %>
                             <div class="col-md-6 ">
-                                <a class=" hover-bg-enlarge link-normal" href="/college-list?action=detail&id=${item.id}">
+                                <a class=" hover-bg-enlarge link-normal" href="/college-list?action=detail&id=<%=c.getIdColleges()%>">
                                     <div class="propertie-item set-bg2 " style="background-image: url('${url}/images/college/cb.jpg')">
                                         <div class="propertie-info text-white" style="background-color: rgba(0, 0, 0, 0.212);">
                                             <div class="info-warp">
-                                                <h5>${item.name}</h5>
+                                                <h5><%=c.getName()%></h5>
                                                 <p>
-                                                    ${item.introduce}
+                                                    <%= c.getIntroduce()%>
                                                     <br/>
-                                                   Website: <a class="link-normal" href="${item.website}">${item.website}</a>
+                                                   Website: <a class="link-normal" href="<%=c.getWebsite()%>"><%=c.getWebsite()%></a>
                                                 </p>
                                             </div>
                                             <p class="price2 mb-0">
@@ -158,8 +169,7 @@
                                 </a>
                                 <hr></hr>
                             </div>
-                        	
-                        </c:forEach>
+                       <%}%>
                         </div>
                     </div>
                 </section>
