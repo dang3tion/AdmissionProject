@@ -57,7 +57,7 @@
 						<li class="active hover-menu"><a href="${pageContext.request.contextPath}/"> Trang chủ
 						</a></li>
 						<li class="active hover-menu"><a
-							href="filterpage">
+							href="filterpage?page=1">
 								Trang lọc </a></li>
 
 						<li class="active hover-menu"><a href="#"> Tư vấn chọn

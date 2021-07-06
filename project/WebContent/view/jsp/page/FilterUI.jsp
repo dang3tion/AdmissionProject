@@ -106,6 +106,7 @@
                                     <span class="icon">
                       <span class="icon-keyboard_arrow_down"></span>
                                     </span>
+                                    <input type="hidden" value="<%= request.getParameter("page")%>" name="page"/>
                                     
                                 </div>
                             </div>
@@ -182,31 +183,31 @@
 
                 <nav class="rehomes-pagination">
                     <ul class="pagination">
+                        <%
+                            int numberPage = (int) request.getAttribute("numberPage");
+                            for (int i = 0; i < numberPage;i++){%>
                         <li class="page-item">
-                            <a class="page-link" href="#">
-                                <h5> 1</h5>
+                            <% String link = "filter?province="+request.getParameter("province")+"&major="+request.getParameter("major")+"&page="+(i+1)+"&type="+request.getParameter("type");%>
+                            <a class="page-link" href="<%=link%>">
+                                <h5> <%=(i+1)%></h5>
                             </a>
                         </li>
-                        <li class="page-item">
-                            <a class="page-link active" href="#">
-                                <h5> 2</h5>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">
-                                <h5> 3</h5>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">
-                                <h5> Next</h5>
-                            </a>
-                        </li>
+                        <%}%>
+
+<%--                        <li class="page-item">--%>
+<%--                            <a class="page-link" href="#">--%>
+<%--                                <h5> Next</h5>--%>
+<%--                            </a>--%>
+<%--                        </li>--%>
                     </ul>
                 </nav>
                 <div class="page-counter">
                     <p>
-                        Page <span>1</span> of <span>60</span> results
+                        <%
+                            int currentPage = Integer.parseInt(request.getParameter("page"));
+
+                        %>
+                        Page <span><%=currentPage%></span> of <span><%=numberPage%></span> <% if(numberPage >1) {%>results <%}else{%> result<%}%>
                     </p>
                 </div>
             </div>

@@ -27,11 +27,17 @@ public class FilterPageController extends HttpServlet {
 
         req.setAttribute("majors",majors);
 
-        String params[] = {"tphcm",majors.get(1),"daihoc"};
-        ArrayList<CollegesInfo> list = dao.getList(params);
+        String params[] = {"All","All","daihoc"};
+        ArrayList<CollegesInfo> list = dao.getList(params,1);
         req.setAttribute("list",list);
 
-        req.getRequestDispatcher("view/jsp/page/FilterUI.jsp").forward(req,resp);
+        int numberPage = dao.getNumberPage();
+        req.setAttribute("numberPage",numberPage);
+
+
+        System.out.println(numberPage);
+
+        req.getRequestDispatcher("view/jsp/page/FilterUI.jsp?page=1&province="+params[0]+"&major="+params[1]+"&type="+params[2]).forward(req,resp);
 
     }
 

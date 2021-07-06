@@ -21,7 +21,7 @@ public class FilterController extends HttpServlet {
         String province = req.getParameter("province");
         String major = req.getParameter("major");
         String type = req.getParameter("type");
-       // int page = Integer.parseInt(req.getParameter("page"));
+        int page = Integer.parseInt(req.getParameter("page"));
 
 
         FilterDAO dao = new FilterDAO();
@@ -29,14 +29,14 @@ public class FilterController extends HttpServlet {
         req.setAttribute("majors",majors);
 
         String params[] = {province,major,type};
-        ArrayList<CollegesInfo> list = dao.getList(params);
+        ArrayList<CollegesInfo> list = dao.getList(params,page);
         req.setAttribute("list",list);
 
+        int numberPage = dao.getNumberPage();
+        req.setAttribute("numberPage",numberPage);
 
 
-
-
-        req.getRequestDispatcher("view/jsp/page/FilterUI.jsp").forward(req,resp);
+        req.getRequestDispatcher("view/jsp/page/FilterUI.jsp?page="+1).forward(req,resp);
     }
 
     @Override
