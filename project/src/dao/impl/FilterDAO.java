@@ -26,21 +26,16 @@ public class FilterDAO implements dao.IFilterDAO {
     @Override
     public ArrayList<CollegesInfo> getList(String[] type) {
         String query = "";
-        int a = -1;
         if (type[0].equalsIgnoreCase("All") && type[1].equalsIgnoreCase("All")){
-            a = 2;
             query = "SELECT t.TENTRUONG, t.ID_TRUONG ,t.LOAITRUONG, t.WEBSITE, t.TT_TUYENSINH, t.TRANGTHAI FROM TRUONGHOC t WHERE t.LOAITRUONG = '"+type[2]+"'";
         }
         else if (type[0].equalsIgnoreCase("All")){
-            a = 0;
             query = "SELECT t.TENTRUONG, k.ID_TRUONG ,t.LOAITRUONG, t.WEBSITE, t.TT_TUYENSINH, t.TRANGTHAI FROM TRUONGHOC t, KHUNGDT_TRUONG k , NGANH_KHUNGDT n, NGANH ng WHERE k.ID_KDT = n.ID_KDT AND t.LOAITRUONG = '"+type[2]+"' AND k.ID_TRUONG = t.ID_TRUONG AND n.ID_NGANH = ng.ID_NGANH AND ng.TEN_NGANH = N'"+type[1]+"'";
         }
         else if (type[1].equalsIgnoreCase("All")){
-            a = 1;
             query = "SELECT t.TENTRUONG, t.ID_TRUONG ,t.LOAITRUONG, t.WEBSITE, t.TT_TUYENSINH, t.TRANGTHAI FROM TRUONGHOC t, DIACHI d WHERE t.LOAITRUONG = '"+type[2]+"' AND d.ID_TRUONG = t.ID_TRUONG AND d.TINH = '"+type[0]+"'";
         }
         else{
-            a = 3;
             query = "SELECT t.TENTRUONG, k.ID_TRUONG ,t.LOAITRUONG, t.WEBSITE, t.TT_TUYENSINH, t.TRANGTHAI FROM TRUONGHOC t, KHUNGDT_TRUONG k , NGANH_KHUNGDT n, NGANH ng, DIACHI d WHERE k.ID_KDT = n.ID_KDT AND t.LOAITRUONG = '"+type[2]+"' AND k.ID_TRUONG = t.ID_TRUONG AND n.ID_NGANH = ng.ID_NGANH AND ng.TEN_NGANH = N'"+type[1]+"' AND d.ID_TRUONG = t.ID_TRUONG AND d.TINH = '"+type[0]+"'";
         }
         ArrayList<CollegesInfo> collegesInfos = new ArrayList<>();
