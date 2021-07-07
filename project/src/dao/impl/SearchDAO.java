@@ -80,8 +80,34 @@ public class SearchDAO implements ISearchDAO {
         }
         return colleges;
     }
+    public ArrayList<String> getHint(String keyword){
+        ArrayList<String> result = new ArrayList<>();
+        String key = keyword.trim();
+
+        if (key.equals("")){
+            return result;
+        }
+        else {
+            String query = "SELECT TENTRUONG FROM TRUONGHOC WHERE TENTRUONG LIKE N'%" + key + "%'";
+
+            AccessDatabase database = AccessDatabase.getInstance();
+            try (ResultSet rs = database.executeQuery(query)) {
+                System.out.println(query);
+                while (rs.next()) {
+                    result.add(rs.getString("TENTRUONG"));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+    }
 
     public static void main(String[] args) {
+        SearchDAO dao = new SearchDAO();
+        for (String s : dao.getHint("k")){
+            System.out.println(s);
+        }
 
     }
 }
