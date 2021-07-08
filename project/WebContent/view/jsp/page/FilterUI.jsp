@@ -180,7 +180,7 @@
 
         <div class="container mt-3 mb-3">
             <div class="rehomes-pagination-counter mb-100 d-flex flex-wrap justify-content-between align-items-center wow fadeInUp" data-wow-delay="200ms" style="visibility: visible" ; animationDelay="200ms" animationName="fadeInUp">
-
+                <% if(colleges.size() > 0){%>
                 <nav class="rehomes-pagination">
                     <ul class="pagination">
                         <%
@@ -192,7 +192,8 @@
                                 <h5> <%=(i+1)%></h5>
                             </a>
                         </li>
-                        <%}%>
+                        <%}
+                        %>
 
 <%--                        <li class="page-item">--%>
 <%--                            <a class="page-link" href="#">--%>
@@ -205,11 +206,13 @@
                     <p>
                         <%
                             int currentPage = Integer.parseInt(request.getParameter("page"));
-
                         %>
                         Page <span><%=currentPage%></span> of <span><%=numberPage%></span> <% if(numberPage >1) {%>results <%}else{%> result<%}%>
                     </p>
                 </div>
+                <%}else{%>
+                <p style="margin: auto">Không tìm thấy!</p>
+                <%}%>
             </div>
         </div>
 

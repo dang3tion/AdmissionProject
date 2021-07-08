@@ -28,7 +28,7 @@ public class FilterDAO implements dao.IFilterDAO {
 
 
     @Override
-    public ArrayList<CollegesInfo> getList(String[] type) {
+    public ArrayList<CollegesInfo> filter(String[] type) {
         String query = "";
         if (type[0].equalsIgnoreCase("All") && type[1].equalsIgnoreCase("All")){
             query = "SELECT t.TENTRUONG, t.ID_TRUONG ,t.LOAITRUONG, t.WEBSITE, t.TT_TUYENSINH, t.TRANGTHAI FROM TRUONGHOC t WHERE t.LOAITRUONG = '"+type[2]+"'";
@@ -113,7 +113,7 @@ public class FilterDAO implements dao.IFilterDAO {
         }
         return majors;
     }
-    public ArrayList<CollegesInfo> getList(String[] type, int page) {
+    public ArrayList<CollegesInfo> filter(String[] type, int page) {
         String queryS = "";
         if (type[0].equalsIgnoreCase("All") && type[1].equalsIgnoreCase("All")){
             queryS = "SELECT t.TENTRUONG, t.ID_TRUONG ,t.LOAITRUONG, t.WEBSITE, t.TT_TUYENSINH, t.TRANGTHAI FROM TRUONGHOC t WHERE t.LOAITRUONG = '"+type[2]+"'";
@@ -231,11 +231,17 @@ public class FilterDAO implements dao.IFilterDAO {
         }
         return collegesInfos;
     }
+    public ArrayList<CollegesInfo> getAllList(int page){
+        ArrayList<CollegesInfo> collegesInfos = new ArrayList<>();
+        String[] params = {"All","All","daihoc"};
+        collegesInfos = filter(params,1);
+        return collegesInfos;
+    }
 
     public static void main(String[] args) {
         FilterDAO dao = new FilterDAO();
         String[] params = {"All","All","daihoc"};
-        for (CollegesInfo c: dao.getList(params,1)){
+        for (CollegesInfo c: dao.filter(params,1)){
             System.out.println(c);
         }
        // System.out.println(dao.loadMajors().toString());

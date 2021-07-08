@@ -1,4 +1,4 @@
-package controller.client;
+package controller.client.filter;
 
 import dao.impl.FilterDAO;
 import model.CollegesInfo;
@@ -28,17 +28,15 @@ public class FilterPageController extends HttpServlet {
         req.setAttribute("majors",majors);
 
         String params[] = {"All","All","daihoc"};
-        ArrayList<CollegesInfo> list = dao.getList(params,1);
+        ArrayList<CollegesInfo> list = dao.filter(params,1);
         req.setAttribute("list",list);
 
         int numberPage = dao.getNumberPage();
         req.setAttribute("numberPage",numberPage);
 
-
         System.out.println(numberPage);
 
-        req.getRequestDispatcher("view/jsp/page/FilterUI.jsp?page=1&province="+params[0]+"&major="+params[1]+"&type="+params[2]).forward(req,resp);
-
+        req.getRequestDispatcher("view/jsp/page/FilterUI.jsp?page="+req.getParameter("page")+"&province="+params[0]+"&major="+params[1]+"&type="+params[2]).forward(req,resp);
     }
 
 }

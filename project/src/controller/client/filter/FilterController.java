@@ -1,4 +1,4 @@
-package controller.client;
+package controller.client.filter;
 
 import dao.impl.FilterDAO;
 import model.CollegesInfo;
@@ -16,20 +16,29 @@ public class FilterController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        //String
-
         String province = req.getParameter("province");
         String major = req.getParameter("major");
         String type = req.getParameter("type");
-        int page = Integer.parseInt(req.getParameter("page"));
 
+        String[] params = {province,major,type};
+        filter(params,req,resp);
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req,resp);
+    }
+    private void filter(String[] type,HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         FilterDAO dao = new FilterDAO();
         ArrayList<String> majors = dao.loadMajors();
+
+        int page = Integer.parseInt(req.getParameter("page"));
+
         req.setAttribute("majors",majors);
 
-        String params[] = {province,major,type};
-        ArrayList<CollegesInfo> list = dao.getList(params,page);
+        ArrayList<CollegesInfo> list = dao.filter(type,page);
         req.setAttribute("list",list);
 
         int numberPage = dao.getNumberPage();
@@ -37,10 +46,6 @@ public class FilterController extends HttpServlet {
 
 
         req.getRequestDispatcher("view/jsp/page/FilterUI.jsp?page="+1).forward(req,resp);
-    }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req,resp);
     }
 }

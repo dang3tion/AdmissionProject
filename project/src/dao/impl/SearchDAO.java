@@ -9,6 +9,8 @@ import model.Images;
 import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 
 public class SearchDAO implements ISearchDAO {
     private static SearchDAO search = new SearchDAO();
@@ -24,14 +26,15 @@ public class SearchDAO implements ISearchDAO {
     }
     @Override
     public ArrayList<CollegesInfo> getList(String keyword) {
-        ArrayList<CollegesInfo> colleges = new ArrayList<>();
-        String query = "SELECT t.MATRUONG, t.ID_TRUONG,t.LOAITRUONG,t.WEBSITE,t.TT_TUYENSINH,t.TRANGTHAI FROM TRUONGHOC t WHERE TRANGTHAI = 'hoat dong'";
+        ArrayList<CollegesInfo> collegesInfos = new ArrayList<>();
+        String query = "SELECT t.TENTRUONG, t.ID_TRUONG,t.LOAITRUONG,t.WEBSITE,t.TT_TUYENSINH,t.TRANGTHAI FROM TRUONGHOC t WHERE t.TENTRUONG LIKE '%"+keyword.trim()+"%'";
         AccessDatabase database = AccessDatabase.getInstance();
-        try(ResultSet rs = database.executeQuery(query,keyword)){
+        // lấy thông tin trường học
+        try (ResultSet rs = database.executeQuery(query)){
             while (rs.next()){
                 CollegesInfo collegesInfo = new CollegesInfo();
-                collegesInfo.setName(rs.getString("MATRUONG"));
-                collegesInfo.setIdColleges(rs.getString("ID_TRUONG"));
+                collegesInfo.setName(rs.getString("TENTRUONG"));
+                collegesInfo.setIdColleges(rs.getInt("ID_TRUONG")+"");
                 collegesInfo.setType(rs.getString("LOAITRUONG"));
                 collegesInfo.setWebsite(rs.getString("WEBSITE"));
                 collegesInfo.setAdmissionDetail(rs.getString("TT_TUYENSINH"));
@@ -39,10 +42,10 @@ public class SearchDAO implements ISearchDAO {
 
 
                 // lấy danh sách hình ảnh
-                String queryKTD = "SELECT TIEUDE,URL_ANH_TRANGTHAI HINHANH WHERE ID_TRUONG = ? AND TRANGTHAI = 'active' GROUP BY ID_TRUONG";
+                String queryKTD = "SELECT TIEUDE,URL_ANH,TRANGTHAI FROM HINHANH WHERE ID_TRUONG = ?";
                 ArrayList<Images> images = new ArrayList<>();
                 try (ResultSet rsKTD = database.executeQuery(queryKTD,collegesInfo.getIdColleges())){
-                    if (rsKTD.next()){
+                    while (rsKTD.next()){
                         String title = rsKTD.getString("TIEUDE");
                         String url = rsKTD.getString("URL_ANH");
                         String state = rsKTD.getString("TRANGTHAI");
@@ -53,12 +56,11 @@ public class SearchDAO implements ISearchDAO {
                 catch (Exception e){
                     e.printStackTrace();
                 }
-
                 // lấy địa chỉ
-                String queryDC = "SELECT TIEUDE,DIACHI,TINH,QUAN_HUYEN,TRANGTHAI FROM DIACHI WHERE ID_TRUONG = ? AND TRANGTHAI = 'hoat dong'";
+                String queryDC = "SELECT TIEUDE,DIACHI,TINH,QUAN_HUYEN,TRANGTHAI FROM DIACHI WHERE ID_TRUONG = ?";
                 ArrayList<AddressDetail> addressDetails = new ArrayList<>();
-                try (ResultSet rsDC = database.executeQuery(query,collegesInfo.getIdColleges())){
-                    while (rs.next()){
+                try (ResultSet rsDC = database.executeQuery(queryDC,collegesInfo.getIdColleges())){
+                    while (rsDC.next()){
                         AddressDetail address = new AddressDetail();
                         address.setTitle(rsDC.getString("TIEUDE"));
                         address.setAddress(rsDC.getString("DIACHI"));
@@ -68,22 +70,21 @@ public class SearchDAO implements ISearchDAO {
                         addressDetails.add(address);
                     }
                     collegesInfo.setListAdress(addressDetails);
-                    colleges.add(collegesInfo);
                 }
                 catch (Exception e){
                     e.printStackTrace();
                 }
+                collegesInfos.add(collegesInfo);
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        return colleges;
+        return collegesInfos;
     }
-    public ArrayList<String> getHint(String keyword){
-        ArrayList<String> result = new ArrayList<>();
+    public HashSet<String> getHint(String keyword){
+        HashSet<String> result = new HashSet<>();
         String key = keyword.trim();
-
         if (key.equals("")){
             return result;
         }
@@ -99,14 +100,70 @@ public class SearchDAO implements ISearchDAO {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            String query2 = "SELECT TENTRUONG FROM TRUONGHOC ";
+
+            try (ResultSet rs = database.executeQuery(query2)) {
+                System.out.println(query2);
+                while (rs.next()) {
+                    String s = (rs.getString("TENTRUONG"));
+                        if (keyword.indexOf(s) != -1) {
+                            result.add(s);
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            result.addAll(searchHelp(keyword));
+
             return result;
         }
+    }
+    public HashSet<String> searchHelp(String keyword){
+        HashSet<String> result = new HashSet<>();
+        String[] k = keyword.trim().split(" ");
+            for (String s : k){
+                for (String st : searchQuery(s)){
+                    result.add(st);
+                }
+            }
+        return result;
+    }
+    public HashSet<String> searchQuery(String keyword){
+        HashSet<String> result = new HashSet<>();
+        String query = "SELECT TENTRUONG FROM TRUONGHOC WHERE TENTRUONG LIKE '%"+keyword+"%'";
+        AccessDatabase database = AccessDatabase.getInstance();
+        try(ResultSet rs = database.executeQuery(query)){
+            while (rs.next()){
+                result.add(rs.getString("TENTRUONG"));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+    public ArrayList<String> loadMajors(){
+        ArrayList<String> majors = new ArrayList<>();
+        String query = "SELECT TEN_NGANH FROM NGANH";
+        AccessDatabase database = AccessDatabase.getInstance();
+        try(ResultSet rs = database.executeQuery(query)){
+            while (rs.next()){
+                majors.add(rs.getString("TEN_NGANH"));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return majors;
     }
 
     public static void main(String[] args) {
         SearchDAO dao = new SearchDAO();
-        for (String s : dao.getHint("k")){
-            System.out.println(s);
+        for (String c : dao.getHint("b")){
+            System.out.println(c);
         }
 
     }

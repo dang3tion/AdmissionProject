@@ -41,11 +41,11 @@
 					</div>
 					<div class="form-search-wrap mb-3" data-aos="fade-up"
 						data-aos-delay={200}>
-						<form method="post">
+						<form method="GET" action="search">
 							<div class="row align-items-center">
 								<div class="col-lg-12 mb-4 mb-xl-0 col-xl-4 search-text">
 									<input type="text" class="form-control rounded search-input" id="search-input" oninput="searchHint()"
-										   placeholder="Enter college name " autoFocus />
+										   placeholder="Enter college name " autoFocus name="keyword"/>
 									<div class="search-hint col-md-13" id="search-hint">
 										<div class="list-group" id="list-group">
 <%--&lt;%&ndash;											&lt;%&ndash;%>--%>
@@ -76,27 +76,20 @@
 									<div class="select-wrap">
 				<span class="icon"> <span
 						class="icon-keyboard_arrow_down"></span>
-				</span> <select class="form-control rounded" name id>
-										<option value>All major</option>
-										<option value>Information Technology</option>
-										<option value>Economics</option>
-										<option value>Mechanics</option>
-										<option value>Business English</option>
-										<option value>Finance and Banking</option>
-										<option value>Business Administration</option>
-										<option value>Chemical Engineering</option>
-										<option value>Trade Marketing</option>
-										<option value>Nuclear Engineering</option>
-										<option value>International Trade</option>
-										<option value>Others</option>
+				</span> <select class="form-control rounded" name id="majors" onclick="loadMajors();this.onclick=null;">
+										<option value="All">All major</option>
 									</select>
 									</div>
 								</div>
 
 								<div class="col-lg-12 col-xl-2 ml-auto text-right">
-									<NavLink to="/searching"
-											 class="cta btn btn-primary btn-block rounded"> <span
-											class=" text-white rounded"> Tìm kiếm </span> </NavLink>
+<%--									<NavLink to="/searching" class="cta btn btn-primary btn-block rounded">--%>
+<%--										<button type="submit"> <span class=" text-white rounded"> Tìm kiếm </span></button>--%>
+<%--									</NavLink>--%>
+
+										<button type="submit" class="cta btn btn-primary btn-block rounded">
+											<span class="text-white rounded">Tìm kiếm</span>
+										</button>
 								</div>
 							</div>
 						</form>
@@ -281,7 +274,7 @@
 		function searchHint(){
 			var keyword = document.getElementById("search-input").value;
 			$.ajax({
-				url: "search",
+				url: "search-hint",
 				type: "get",
 				data:{
 					keyword : keyword
@@ -290,7 +283,7 @@
 
 					if (data.length > 0){
 						document.getElementById("list-group").innerHTML ="";
-						// console.log(data);
+						 console.log(data);
 						console.log(keyword);
 						var hint = document.getElementById("search-hint");
 						hint.style.display="block";
@@ -313,6 +306,40 @@
 			console.log(event);
 			document.getElementById("search-hint").style.display="none";
 		}
+		function onChangeItem(event){
+			var keyword = document.getElementById("search-input").value;
+			var text = event.split("");
+			var index = event.indexOf(keyword);
+			for (var i = index; i < keyword.length;i++){
+				text[i].bold();
+			}
+			document.getElementById("search-input").value = text;
+			console.log(event);
+		}
+		function loadMajors(){
+            $.ajax({
+                url: "search-major",
+                type: "get",
+                success: function (data) {
+
+                    if (data.length > 0){
+                    	var input = document.getElementById("majors");
+                        input.innerHTML = `<option value="All">All major</option>`;
+                        console.log(data);
+                        input.innerHTML += data;
+
+						input.select();
+                    }
+                    else {
+                        console.log('not found.');
+                    }
+                },
+                error: function (data) {
+                    console.log('An error occurred.');
+                    console.log(data);
+                },
+            });
+        }
 
 
 	</script>

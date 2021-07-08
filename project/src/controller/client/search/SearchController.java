@@ -1,6 +1,7 @@
-package controller.client;
+package controller.client.search;
 
 import dao.impl.SearchDAO;
+import model.CollegesInfo;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 @WebServlet(urlPatterns = "/search", name = "search")
 public class SearchController extends HttpServlet {
@@ -19,17 +21,12 @@ public class SearchController extends HttpServlet {
         String keyword =  req.getParameter("keyword");
 
         SearchDAO dao = new SearchDAO();
-        ArrayList<String> hints = dao.getHint(keyword);
-        req.setAttribute("hints",hints);
+        ArrayList<CollegesInfo> list = dao.getList(keyword);
+        req.setAttribute("list",list);
 
+        System.out.println(list);
 
-        PrintWriter writer = resp.getWriter();
-//        resp.sendRedirect("view/jsp/page/IndexUI.jsp");
-
-        for (String s : hints){
-            writer.println(
-                    "<a onClick=\"clickOnItem("+"'"+s+"'"+");\" style=\"text-align:left;\" href=\"#\" class=\"list-group-item\">"+s+"</a>");
-        }
+        req.getRequestDispatcher("view/jsp/page/SearchUI.jsp?page="+1).forward(req,resp);
     }
 
     @Override
