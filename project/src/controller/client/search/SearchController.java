@@ -19,14 +19,23 @@ public class SearchController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String keyword =  req.getParameter("keyword");
-
+        int page = 0;
+        if(req.getParameter("page") != null){
+            page = Integer.parseInt(req.getParameter("page"));
+        }
+        else{
+            page = 1;
+        }
         SearchDAO dao = new SearchDAO();
-        ArrayList<CollegesInfo> list = dao.getList(keyword);
+        ArrayList<CollegesInfo> list = dao.getList(keyword,page);
         req.setAttribute("list",list);
+
+        int numberPage = dao.getNumberPage();
+        req.setAttribute("numberPage",numberPage);
 
         System.out.println(list);
 
-        req.getRequestDispatcher("view/jsp/page/SearchUI.jsp?page="+1).forward(req,resp);
+        req.getRequestDispatcher("view/jsp/page/SearchUI.jsp?keyword="+keyword+"&page="+page).forward(req,resp);
     }
 
     @Override

@@ -152,27 +152,27 @@ public class FilterDAO implements dao.IFilterDAO {
         if (type[0].equalsIgnoreCase("All") && type[1].equalsIgnoreCase("All")){
             query = "SELECT * FROM (SELECT t.TENTRUONG, t.ID_TRUONG ,t.LOAITRUONG, t.WEBSITE, t.TT_TUYENSINH, t.TRANGTHAI, ROW_NUMBER() " +
                     "OVER (ORDER BY t.ID_TRUONG) as row FROM TRUONGHOC t WHERE t.LOAITRUONG = '"+type[2]+"'" +
-                    " ) a WHERE row >= "+start+" and row <="+(start*numberPerPage);
+                    " ) a WHERE row >= "+start+" and row <"+(start+numberPerPage);
         }
         else if (type[0].equalsIgnoreCase("All")){
             query = "SELECT * FROM (SELECT t.TENTRUONG, k.ID_TRUONG ,t.LOAITRUONG, t.WEBSITE, t.TT_TUYENSINH, t.TRANGTHAI," +
                     " ROW_NUMBER() OVER (ORDER BY t.ID_TRUONG) as row FROM TRUONGHOC t, KHUNGDT_TRUONG k , NGANH_KHUNGDT n, " +
                     "NGANH ng WHERE k.ID_KDT = n.ID_KDT AND t.LOAITRUONG = '"+type[2]+"' AND k.ID_TRUONG = t.ID_TRUONG AND n.ID_NGANH " +
                     "= ng.ID_NGANH AND ng.TEN_NGANH = N'"+type[1]+"'" +
-                    ") a WHERE row >= "+start+" and row <="+(start*numberPerPage);
+                    ") a WHERE row >= "+start+" and row <"+(start+numberPerPage);
         }
         else if (type[1].equalsIgnoreCase("All")){
             query = "SELECT * FROM (SELECT t.TENTRUONG, t.ID_TRUONG ,t.LOAITRUONG, t.WEBSITE, t.TT_TUYENSINH, t.TRANGTHAI," +
                     " ROW_NUMBER() OVER (ORDER BY t.ID_TRUONG) as row FROM TRUONGHOC t, DIACHI d  WHERE t.LOAITRUONG = '"+type[2]+"' " +
                     "AND d.ID_TRUONG = t.ID_TRUONG AND d.TINH = '"+type[0]+"'" +
-                    ") a WHERE row >= "+start+" and row <="+(start*numberPerPage);
+                    ") a WHERE row >= "+start+" and row <"+(start+numberPerPage);
         }
         else{
             query = "SELECT * FROM (SELECT t.TENTRUONG, t.ID_TRUONG ,t.LOAITRUONG, t.WEBSITE, t.TT_TUYENSINH, t.TRANGTHAI, " +
                     "ROW_NUMBER() OVER (ORDER BY t.ID_TRUONG) as row FROM TRUONGHOC t, KHUNGDT_TRUONG k , NGANH_KHUNGDT n, NGANH ng," +
                     " DIACHI d WHERE k.ID_KDT = n.ID_KDT AND t.LOAITRUONG = '"+type[2]+"' AND k.ID_TRUONG = t.ID_TRUONG AND n.ID_NGANH = " +
                     "ng.ID_NGANH AND ng.TEN_NGANH = N'"+type[1]+"' AND d.ID_TRUONG = t.ID_TRUONG AND d.TINH = '"+type[0]+"'" +
-                    ") a WHERE row >= "+start+" and row <="+(start*numberPerPage);
+                    ") a WHERE row >= "+start+" and row <"+(start+numberPerPage);
         }
         ArrayList<CollegesInfo> collegesInfos = new ArrayList<>();
         AccessDatabase database = AccessDatabase.getInstance();
