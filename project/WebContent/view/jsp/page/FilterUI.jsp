@@ -9,20 +9,20 @@
 <jsp:include page="../component/menu.jsp"></jsp:include>
 
 
-<body>
+<body onload="filter()">
 
 	    <div class="site-blocks-cover2 overlay " style="background-image: url('${url}/images/hero_2.jpg')" data-aos="fade" data-stellar-background-ratio="1"></div>
 
-        <div class="site-section bg-light">
+        <div class="site-section bg-light ">
             <div class="container">
                 <div class="form-search-wrap mb-3" data-aos="fade-up" data-aos-delay={200}>
-                    <form method="GET" action="filter">
+<%--                    <form method="GET" action="filter">--%>
                     <input type="hidden" />
                         <div class="row align-items-center">
                             <div class="col-lg-12 mb-4 mb-xl-0 col-xl-3">
                                 <div class="wrap-icon border">
                                     <span class="icon icon-room"></span>
-                                    <select class="form-control rounded" name="province" id>
+                                    <select class="form-control rounded" name="province" id="province">
                                                 <option  value="All">All</option>
 												<option  value="An Giang">An Giang</option>
 												<option  value="Bà Rịa – Vũng Tàu">Bà Rịa – Vũng Tàu</option>
@@ -93,7 +93,7 @@
                             </div>
                             <div class="col-lg-12 mb-4 mb-xl-0 col-xl-3">
                                 <div class="select-wrap border">
-                                    <select class="form-control rounded" name="major" id>
+                                    <select class="form-control rounded" name="major" id="major">
                                         <%
                                         ArrayList<String> majors = (ArrayList<String>) request.getAttribute("majors");
                                         %>
@@ -106,7 +106,7 @@
                                     <span class="icon">
                       <span class="icon-keyboard_arrow_down"></span>
                                     </span>
-                                    <input type="hidden" value="<%= request.getParameter("page")%>" name="page"/>
+<%--                                    <input type="hidden" value="<%= request.getParameter("page")%>" name="page"/>--%>
                                     
                                 </div>
                             </div>
@@ -115,7 +115,7 @@
                                     <span class="icon">
                       <span class="icon-keyboard_arrow_down"></span>
                                     </span>
-                                    <select class="form-control rounded" name="type" id>
+                                    <select class="form-control rounded" name="type" id="type">
 				                      <option value="daihoc">Public University</option>
 				                      <option value="Private University">Private University</option>
 				                      <option value="Public College">Public College</option>
@@ -127,12 +127,12 @@
                         </div>
                             </div>
                             <div class="col-lg-12 mb-4 mb-xl-0 col-xl-3">
-                          	 <button type="submit" class="cta btn btn-primary btn-block rounded">
+                          	 <button type="submit" class="cta btn btn-primary btn-block rounded" onclick="filter()">
             		            <span class="text-white rounded">Filter</span>
 			                 </button>
                             </div>
                         </div>
-                    </form>
+<%--                    </form>--%>
                 </div>
 
                 <div class="row mb-5">
@@ -142,58 +142,60 @@
                 </div>
                 <section class="">
                     <div class="container">
-                        <div class="row">
-                        <% ArrayList<CollegesInfo> colleges = (ArrayList<CollegesInfo>) request.getAttribute("list");
-                            for(CollegesInfo c : colleges) { %>
-                            <div class="col-md-6 ">
-                                <a class=" hover-bg-enlarge link-normal" href="/college-list?action=detail&id=<%=c.getIdColleges()%>">
-                                    <div class="propertie-item set-bg2 " style="background-image: url('${url}/images/college/cb.jpg')">
-                                        <div class="propertie-info text-white" style="background-color: rgba(0, 0, 0, 0.212);">
-                                            <div class="info-warp">
-                                                <h5><%=c.getName()%></h5>
-                                                <p>
-                                                    <%= c.getIntroduce()%>
-                                                    <br/>
-                                                   Website: <a class="link-normal" href="<%=c.getWebsite()%>"><%=c.getWebsite()%></a>
-                                                </p>
-                                            </div>
-                                            <p class="price2 mb-0">
-                                                <span class="icon-star text-warning"></span>
-                                                <span class="icon-star text-warning"></span>
-                                                <span class="icon-star text-warning"></span>
+                        <div class="row" id="college-list">
 
-                                                <span class="icon-star text-warning"></span>
-                                                <span class="icon-star-half-full text-warning"></span>
-                                                <span class="review">(1302 Reviews)</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </a>
-                                <hr></hr>
-                            </div>
-                       <%}%>
+<%--                        <% ArrayList<CollegesInfo> colleges = (ArrayList<CollegesInfo>) request.getAttribute("list");--%>
+<%--                            for(CollegesInfo c : colleges) { %>--%>
+<%--                            <div class="col-md-6 ">--%>
+<%--                                <a class=" hover-bg-enlarge link-normal" href="/college-list?action=detail&id=<%=c.getIdColleges()%>">--%>
+<%--                                    <div class="propertie-item set-bg2 " style="background-image: url('${url}/images/college/cb.jpg')">--%>
+<%--                                        <div class="propertie-info text-white" style="background-color: rgba(0, 0, 0, 0.212);">--%>
+<%--                                            <div class="info-warp">--%>
+<%--                                                <h5><%=c.getName()%></h5>--%>
+<%--                                                <p>--%>
+<%--                                                    <%= c.getIntroduce()%>--%>
+<%--                                                    <br/>--%>
+<%--                                                   Website: <a class="link-normal" href="<%=c.getWebsite()%>"><%=c.getWebsite()%></a>--%>
+<%--                                                </p>--%>
+<%--                                            </div>--%>
+<%--                                            <p class="price2 mb-0">--%>
+<%--                                                <span class="icon-star text-warning"></span>--%>
+<%--                                                <span class="icon-star text-warning"></span>--%>
+<%--                                                <span class="icon-star text-warning"></span>--%>
+
+<%--                                                <span class="icon-star text-warning"></span>--%>
+<%--                                                <span class="icon-star-half-full text-warning"></span>--%>
+<%--                                                <span class="review">(1302 Reviews)</span>--%>
+<%--                                            </p>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                </a>--%>
+<%--                                <hr></hr>--%>
+<%--                            </div>--%>
+<%--                       <%}%>--%>
                         </div>
                     </div>
                 </section>
             </div>
         </div>
 
-        <div class="container mt-3 mb-3">
+        <div class="container mt-3 mb-3" id="page-number-container" style="display: none">
             <div class="rehomes-pagination-counter mb-100 d-flex flex-wrap justify-content-between align-items-center wow fadeInUp" data-wow-delay="200ms" style="visibility: visible" ; animationDelay="200ms" animationName="fadeInUp">
-                <% if(colleges.size() > 0){%>
-                <nav class="rehomes-pagination">
-                    <ul class="pagination">
-                        <%
-                            int numberPage = (int) request.getAttribute("numberPage");
-                            for (int i = 0; i < numberPage;i++){%>
-                        <li class="page-item">
-                            <% String link = "filter?province="+request.getParameter("province")+"&major="+request.getParameter("major")+"&page="+(i+1)+"&type="+request.getParameter("type");%>
-                            <a class="page-link" href="<%=link%>">
-                                <h5> <%=(i+1)%></h5>
+<%--                <% if(colleges.size() > 0){%>--%>
+                <nav class="rehomes-pagination" id="list-number">
+					<input type="hidden" name="page" value="<%=request.getParameter("page")%>" id="currentPage">
+                    <ul class="pagination" id="list-item">
+<%--                        <%--%>
+<%--                            int numberPage = (int) request.getAttribute("numberPage");--%>
+<%--                            for (int i = 0; i < numberPage;i++){%>--%>
+                        <li class="page-item" id="item">
+<%--                            <% String link = "filter?province="+request.getParameter("province")+"&major="+request.getParameter("major")+"&page="+(i+1)+"&type="+request.getParameter("type");%>--%>
+                            <a class="page-link" href="" id="item-page">
+<%--                                <h5> <%=(i+1)%></h5>--%>
                             </a>
                         </li>
-                        <%}
-                        %>
+<%--                        <%}--%>
+<%--                        %>--%>
 
 <%--                        <li class="page-item">--%>
 <%--                            <a class="page-link" href="#">--%>
@@ -202,21 +204,102 @@
 <%--                        </li>--%>
                     </ul>
                 </nav>
-                <div class="page-counter">
+                <div class="page-counter" id="next-page">
                     <p>
-                        <%
-                            int currentPage = Integer.parseInt(request.getParameter("page"));
-                        %>
-                        Page <span><%=currentPage%></span> of <span><%=numberPage%></span> <% if(numberPage >1) {%>results <%}else{%> result<%}%>
-                    </p>
+<%--                        <%--%>
+<%--                            int currentPage = Integer.parseInt(request.getParameter("page"));--%>
+<%--                        %>--%>
+<%--                        Page <span><%=currentPage%></span> of <span><%=numberPage%></span> <% if(numberPage >1) {%>results <%}else{%> result<%}%>--%>
+
+						Page <span id="current-page"></span> of <span id="total-page"></span>
+					</p>
                 </div>
-                <%}else{%>
-                <p style="margin: auto">Không tìm thấy!</p>
-                <%}%>
+<%--                <%}else{%>--%>
+                <p id="notify" style="margin: auto; display: none">Không tìm thấy!</p>
+<%--                <%}%>--%>
             </div>
         </div>
 
 
 	<jsp:include page="../component/footer.jsp"></jsp:include>
+
+    <script>
+       function filter(){
+		   document.getElementById("next-page").style.display = "block";
+		   document.getElementById("notify").style.display = "none";
+		   document.getElementById("list-number").style.display = "block";
+           $.ajax({
+               url: "filter",
+               type: "get",
+               data: {
+                   province : document.getElementById("province").value,
+                   major : document.getElementById("major").value,
+                   type: document.getElementById("type").value,
+				   page: document.getElementById("currentPage").value
+               },
+               success: function (data) {
+                   if (data.length > 0) {
+					   var parent = document.getElementById("college-list");
+					   console.log(data);
+
+					   var item = data.substring(0,data.lastIndexOf("</div>"));
+					   var numberPage = data.substring(data.lastIndexOf("</div>")+6);
+
+					   console.log(numberPage);
+
+					   parent.innerHTML = item;
+
+					   document.getElementById("page-number-container").style.display = "block";
+					   var listItem = document.getElementById("list-item");
+					   var item = document.getElementById("item");
+					   listItem.innerHTML = "";
+					   var currentPage = 0;
+					   currentPage = document.getElementById("currentPage").value;
+					   console.log(currentPage);
+					   for (let i = 0; i < numberPage;i++){
+					   		item.innerHTML =  '<li class="page-item" id="item" onclick="filterByItem('+(i+1)+');"> <a class="page-link" id="item-page"> <h5 id="text-item">'+(i+1)+'</h5> </a> </li>';
+						    listItem.innerHTML += item.innerHTML;
+					   }
+					   console.log(currentPage);
+
+					   document.getElementById("currentPage").value = 1;
+
+					   document.getElementById("current-page").innerText = currentPage;
+					   document.getElementById("total-page").innerText = numberPage;
+
+
+					   // hiển thị màu ở trang hiện tại
+					   document.getElementsByClassName("page-link")[currentPage-1].style.backgroundColor="#a0d7ff";
+					   document.getElementsByClassName("page-link")[currentPage-1].style.color="white";
+
+
+					   // document.getElementById("item").style.backgroundColor="#4fc3f7";
+					   // document.getElementById("text-item").style.color = "#ffffff";
+                   }
+                   else {
+					   document.getElementById("next-page").style.display = "none";
+					   document.getElementById("notify").style.display = "block";
+					   document.getElementById("list-number").style.display = "none";
+
+                       console.log('not found.');
+                       document.getElementById("college-list").innerHTML= "";
+                   }
+               },
+               error: function (data) {
+                   console.log('An error occurred.');
+                   console.log(data);
+               },
+           });
+       }
+       function setInputPage(event){
+       		document.getElementById("currentPage").value = event;
+       		console.log(event);
+		   	console.log(document.getElementById("currentPage").value);
+	   }
+	   function filterByItem(event){
+       		setInputPage(event);
+       		filter();
+	   }
+    </script>
 </body>
 </html>
