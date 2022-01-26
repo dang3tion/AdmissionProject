@@ -23,6 +23,7 @@ public class AdminUI extends HttpServlet {
 				request.setAttribute("msg", "true");
 				RequestDispatcher dispatcher = this.getServletContext()
 						.getRequestDispatcher("/view/jsp/page/AdminUI.jsp");
+				
 				dispatcher.forward(request, response);
 			} else {
 				sess.removeAttribute("token");
